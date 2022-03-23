@@ -166,16 +166,3 @@ def jpb2jpp(file,beamarea):
     
     return output_file
 
-#%%
-
-def gen_cube(sub_data,n_data):
-
-    data_naxis1 = sub_data.shape[0]
-    data_naxis2 = sub_data.shape[1]
-
-    data = np.zeros([data_naxis1,data_naxis2,n_data])
-    for i in range(1,n_data+1):
-        print(type('dat%d'%(i)))
-        data[:,:,i-1] = eval('dat%d'%(i))
-        
-    return data

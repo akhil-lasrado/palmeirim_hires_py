@@ -22,17 +22,11 @@ from functools import partial
 
 print("Enter file names: ")
 
-fstr160 = get_pkg_data_filename('HF09729_H_160mic_crop.fits')
-fstr250 = get_pkg_data_filename('HF09729_H_250mic_crop.fits')
-fstr350 = get_pkg_data_filename('HF09729_H_350mic_crop.fits')
-fstr500 = get_pkg_data_filename('HF09729_H_500mic_crop.fits')
+fstr160 = get_pkg_data_filename(str(input("Enter 160 mic name: ")))
+fstr250 = get_pkg_data_filename(str(input("Enter 250 mic name: ")))
+fstr350 = get_pkg_data_filename(str(input("Enter 350 mic name: ")))
+fstr500 = get_pkg_data_filename(str(input("Enter 500 mic name: ")))
 
-# =============================================================================
-# fstr160 = get_pkg_data_filename(str(input("Enter 160 mic name: ")))
-# fstr250 = get_pkg_data_filename(str(input("Enter 250 mic name: ")))
-# fstr350 = get_pkg_data_filename(str(input("Enter 350 mic name: ")))
-# fstr500 = get_pkg_data_filename(str(input("Enter 500 mic name: ")))
-# =============================================================================
 
 f160 = fits.PrimaryHDU(fits.getdata(fstr160),fits.getheader(fstr160))
 f250 = fits.PrimaryHDU(fits.getdata(fstr250),fits.getheader(fstr250))
@@ -238,7 +232,7 @@ plt.imshow(msd_cdens_reg250.data)
 
 msd_cdens_reg250_conv500 = convolveim(msd_cdens_reg250,kernel250_500)
 
-ratiolow2hi = fits.PrimaryHDU(msd_cdens_reg250_conv500.data/msd_term1_reg250.data)
+ratiolow2hi = fits.PrimaryHDU(msd_term1_reg250.data/msd_cdens_reg250_conv500.data)
 ratiolow2hi.header = msd_cdens_reg250.header
 
 plt.imshow(ratiolow2hi.data)

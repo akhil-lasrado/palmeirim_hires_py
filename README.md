@@ -5,6 +5,5 @@ Required inputs:
 
 - Herschel PACS and SPIRE image cutouts (.fits) of the same angular extent, including the 160, 250, 350, 500 micron cutouts of the region.
 - Smoothing kernels for convolution, for the smoothing from all wavelengths to all longer wavelengths, in total this should be 6 kernel .fits files (the kernels by [Aniano et al (2011)](https://doi.org/10.1086/662219) are recommended).
-- Pixel sizes (in arcseconds) of each of the cutouts.
 
 The multiscale_decomposition.py routine depends on functions included in the useful_routines.py and greybody_fit.py files.

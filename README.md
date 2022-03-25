@@ -1,5 +1,5 @@
 # palmeirim_hires_py
-Python implementation of the obtaining a high resolution (18.2") column density map using Herschel PACS and SPIRE multiwavelength images first described in [Palmeirim et al (2013)](https://doi.org/10.1051/0004-6361/201220500). Unsharp masking for the spatial scales at 250 and 350 micron restore the high spacial frequency features lost in convolving all Herschel wavelengths to the (36.4") resolution of the 500 micron image. The resulting map is obtained at the resolution of the SPIRE 250 micron map, which is an improvement by a factor of two over the standard procedure.
+Python implementation for obtaining a high resolution (18.2") column density map using Herschel PACS and SPIRE multiwavelength images first described in [Palmeirim et al (2013)](https://doi.org/10.1051/0004-6361/201220500). Unsharp masking for the spatial scales at 250 and 350 micron restore the high spacial frequency features lost in convolving all Herschel wavelengths to the (36.4") resolution of the 500 micron image. The resulting map is obtained at the resolution of the SPIRE 250 micron map, which is an improvement by a factor of two over the standard procedure.
 
 Required inputs:
 

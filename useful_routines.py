@@ -18,6 +18,8 @@ from reproject import reproject_exact
 
 #%%
 
+# Function to extract the pixel scale of an image from its header, output in arcseconds.
+
 def find_pixel_scale(header):
     
     """Finds the value of the image pixel scale from the image headers
@@ -62,7 +64,7 @@ def find_pixel_scale(header):
     return pixel_scale
 #%%
 
-## CONVOLVE
+# Function to convolve a fits image using a specified kernel. Output is the convolved fits image.
 
 def convolveim(file,kernel):
     
@@ -95,7 +97,7 @@ def convolveim(file,kernel):
 
 #%%
 
-## REGRID
+# Function to convolve a fits image to a particular pixel size. Output is the regridded fits image.
 
 def regridim(file,cdelt_new):
     
@@ -124,6 +126,8 @@ def regridim(file,cdelt_new):
 
 #%%
 
+# Function to convert the units of an image from Mjy/sr to Jy/pixel. Returns a fits image as the output.
+
 def mjps2jpp(file):
     
     data = file.data
@@ -142,6 +146,8 @@ def mjps2jpp(file):
     
 #%%
 
+# Function to convert the units of an image from Jy/beam to Jy/pixel, provided the beamarea of the map is specified. Returns a fits image as the output.
+
 def jpb2jpp(file,beamarea):
     
     data = file.data
@@ -158,17 +164,3 @@ def jpb2jpp(file,beamarea):
     output_file.header = header
     
     return output_file
-
-#%%
-
-def gen_cube(sub_data,n_data):
-
-    data_naxis1 = sub_data.shape[0]
-    data_naxis2 = sub_data.shape[1]
-
-    data = np.zeros([data_naxis1,data_naxis2,n_data])
-    for i in range(1,n_data+1):
-        print(type('dat%d'%(i)))
-        data[:,:,i-1] = eval('dat%d'%(i))
-        
-    return data

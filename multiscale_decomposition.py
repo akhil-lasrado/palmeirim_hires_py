@@ -34,6 +34,9 @@ f350 = fits.PrimaryHDU(fits.getdata(fstr350),fits.getheader(fstr350))
 f500 = fits.PrimaryHDU(fits.getdata(fstr500),fits.getheader(fstr500))
 
 ## KERNELS
+
+# Loads kernels according to filenames of kernels provided by Aniano et al (2011).
+
 print("Loading kernels...")
 kernel160_250 = get_pkg_data_filename('Kernel_HiRes_PACS_160_to_SPIRE_250.fits')
 kernel160_350 = get_pkg_data_filename('Kernel_HiRes_PACS_160_to_SPIRE_350.fits')
@@ -80,9 +83,9 @@ findat3 = f350_conv500_reg500_jpp.data
 
 print("Processing f500...")
 f500_jpp = mjps2jpp(f500)
-findat4 = f500_jpp.data[:-1,:-1]
+findat4 = f500_jpp.data
 
-## The dimensions may not always match at this step, causing rebroadcasting errors in gen_cube. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually editting dataN.
+## The dimensions may not always match at this step, causing rebroadcasting errors in gen_cube. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually slicing findataN to match dimensions. Another issue that can come up is the occurence of NaN values in a row or column near the edges. This can be resolved by removing the particular row or column, and further slicing to match grid dimensions. This comes at the cost of slight misalignments in the final map, and an alternative resolution is being looked into.
 
 print("Performing greybody fit...")
 
@@ -116,7 +119,7 @@ print("Computing term 2...")
 print("Processing f160...")
 f160_conv350_jpp = convolveim(f160, kernel160_350)
 f160_conv350_reg350_jpp = regridim(f160_conv350_jpp,pix350)
-findat1 = f160_conv350_reg350_jpp.data[:-1,:-1]
+findat1 = f160_conv350_reg350_jpp.data
 
 print("Processing f250...")
 f250_conv350 = convolveim(f250, kernel250_350)
@@ -126,9 +129,9 @@ findat2 = f250_conv350_reg350_jpp.data
 
 print("Processing f350...")
 f350_jpp = mjps2jpp(f350) 
-findat3 = f350_jpp.data[:-1,:-1]
+findat3 = f350_jpp.data
 
-## The dimensions may not always match at this step, causing rebroadcasting errors in gen_cube. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually editting dataN.
+## The dimensions may not always match at this step, causing rebroadcasting errors in gen_cube. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually slicing findataN to match dimensions. Another issue that can come up is the occurence of NaN values in a row or column near the edges. This can be resolved by removing the particular row or column, and further slicing to match grid dimensions. This comes at the cost of slight misalignments in the final map, and an alternative resolution is being looked into.
 
 print("Performing greybody fit...")
 
@@ -167,7 +170,7 @@ print("Computing term 3...")
 print("Processing f160...")
 f160_conv250_jpp = convolveim(f160, kernel160_250)
 f160_conv250_reg250_jpp = regridim(f160_conv250_jpp,pix250)
-findat1 = f160_conv250_reg250_jpp.data[:-1,:-1]
+findat1 = f160_conv250_reg250_jpp.data
 
 print("Processing f250...")
 f250_jpp = mjps2jpp(f250)
@@ -212,10 +215,10 @@ print("Term 3 computed!")
 ## PUTTING TOGETHER SCALES
 
 print("Adding terms...")
-msd_cdens_reg250 = fits.PrimaryHDU(msd_term1_reg250.data + msd_term2_reg250.data + msd_term3_reg250.data[:-2,:-2])
+msd_cdens_reg250 = fits.PrimaryHDU(msd_term1_reg250.data + msd_term2_reg250.data + msd_term3_reg250.data)
 msd_cdens_reg250.header = msd_term1_reg250.header
 
-## The dimensions may not always match at this step, causing rebroadcasting errors. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually editting dataN.
+## The dimensions may not always match at this step, causing rebroadcasting errors in gen_cube. The difference in dimensions should not be more than about 2 pixels however, and should be resolvable by manually slicing findataN to match dimensions. Another issue that can come up is the occurence of NaN values in a row or column near the edges. This can be resolved by removing the particular row or column, and further slicing to match grid dimensions. This comes at the cost of slight misalignments in the final map, and an alternative resolution is being looked into.
 
 plt.subplot(2,2,1,projection=WCS(msd_cdens_reg250.header))
 plt.imshow(msd_term1_reg250.data)

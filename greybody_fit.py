@@ -18,6 +18,9 @@ from functools import partial
 
 ## GREYBODY FITTING FUNCTION
 
+
+# Blackbody function in terms of wavelength
+
 def bbf(l,T_d):
     
     h = 6.626e-34    # Js
@@ -26,13 +29,16 @@ def bbf(l,T_d):
     
     return (2*h*c**2)/((l**5)*(np.exp((h*c)/(l*k*T_d))-1))
 
+# Dust opacity law
+
 def k_nu(l):
     
     c = 3e8          # m/s
     B = 2
     
     return 0.1*(c/(l*1e12))**B
-    
+
+# Expression for the optical depth
 def t_nu(l,N_H2):
     
     mu = 2.86
@@ -40,16 +46,19 @@ def t_nu(l,N_H2):
     
     return mu*mH*k_nu(l)*N_H2
 
-# Convert the Planck function to a function of frequency
+# Factor to convert the blackbody function to a function of frequency
 def ltov(l):
     
     c = 3e8          # m/s
     
     return (l**2)/c
 
+# Final greybody equation
 def fluxden(omega,l,T_d,N_H2):
     
     return 1e26*omega*ltov(l)*bbf(l,T_d)*(1-np.exp(-t_nu(l,N_H2)))
+
+# Function to fit a "cuboid" of data to the greybody function. For a final grid dimension of p x q, and for fitting r wavelengths, the data cuboid must be a p x q x r array with images along the third axis in the same sequence as in the "wavelengths" array input. omega is the solid angle of a pixel, and sig_vals is the uncertainty factor in each image. The function outputs the temperature, column density, and reduced-chisquare maps in result (p x q x 3), and the 1-sigma error in temperature and column density for the final pixel.
 
 def greybody_fit(data,wavelengths,omega,sig_vals):
 

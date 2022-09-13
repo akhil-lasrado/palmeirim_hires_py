@@ -1,0 +1,6 @@
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_PACS_160_to_SPIRE_250.fits.gz
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_PACS_160_to_SPIRE_350.fits.gz
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_PACS_160_to_SPIRE_500.fits.gz
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_SPIRE_250_to_SPIRE_350.fits.gz
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_SPIRE_250_to_SPIRE_500.fits.gz
+https://www.astro.princeton.edu/~draine/Kernels/Kernels_2018/Kernel_FITS_Files/Hi_Resolution/Kernel_HiRes_SPIRE_350_to_SPIRE_500.fits.gz

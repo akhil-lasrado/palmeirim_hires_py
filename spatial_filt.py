@@ -16,6 +16,9 @@ BASED ON THE PRESCRIPTION DESCRIBED IN PALMEIRIM ET AL (2013) (https://doi.org/1
   containing the three scripts (spatial_filt.py, greybody_fit.py, and useful_routines.py) along with the ./+spatial_filt.cfg file
   to prevent overwriting of existing files. The kernels folder must also be placed here.
 
+> The fits files saved after trimming or shifting will have miscalibrated headers. This can be fixed by editing the CRPIX1 and CRPIX2 keywords to the pixel
+  coordinates in the new image which match the CRVAL1 and CRVAL2 values respectively.
+  
 """
 
 #%%

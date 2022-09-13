@@ -13,6 +13,7 @@ from scipy.optimize import curve_fit
 from scipy.stats import chisquare
 import matplotlib.ticker as ticker
 from functools import partial
+from console_progressbar import ProgressBar
 
 #%%
 
@@ -63,16 +64,17 @@ def fluxden(omega,l,T_d,N_H2):
 def greybody_fit(data,wavelengths,omega,sig_vals):
 
     result = np.zeros([data.shape[0],data.shape[1],3])
-
+    pb = ProgressBar(total=result.shape[0],prefix='Performing greybody fit...',suffix='Completed',decimals=1,length=50,fill='>',zfill=' ')
     for i in range(result.shape[0]):
-        print(int(float((i+1)/result.shape[0])*100),'%')
+        pb.print_progress_bar(i)
+        #print(int(float((i+1)/result.shape[0])*100),'%')
         for j in range(result.shape[1]):
             fluxes = np.array(data[i,j,:])
             sig = np.multiply(fluxes,sig_vals)
             pfluxden = partial(fluxden,omega)
             popt,pcov = curve_fit(pfluxden, wavelengths, fluxes,[10,1e22],sigma=sig,absolute_sigma='True')
-            result[i,j,0] = popt[0]
-            result[i,j,1] = popt[1]
+            result[i,j,0] = popt[0] #temperature
+            result[i,j,1] = popt[1] #cdensity
             error = np.sqrt(np.diag(pcov))
             df = len(fluxes)-2
             r = pfluxden(wavelengths,*popt)-fluxes

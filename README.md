@@ -4,7 +4,7 @@ Python program for obtaining a high resolution (18.2") column density map using 
 
 - Herschel PACS and SPIRE image cutouts (.fits) of the same angular extent, including the 160, 250, 350, 500 micron cutouts of the region. Units must be in Jy/pixel. Functions for conversions from Jy/beam (beam size must be given) and MJy/sr to Jy/pixel are included in the useful_routines.py script.
 
-- Smoothing kernels for convolution, for the smoothing from all wavelengths to all longer wavelengths, in total this should be 6 kernel .fits files (the kernels by [Aniano et al (2011)](https://doi.org/10.1086/662219) are recommended). These are provided in the kernels folder.
+- Smoothing kernels for convolution, for the smoothing from all wavelengths to all longer wavelengths, in total this should be 6 kernel .fits files (the kernels by [Aniano et al (2011)](https://doi.org/10.1086/662219)([pdf](https://iopscience.iop.org/article/10.1086/662219/pdf)) are recommended). These are provided in the kernels folder.
 
 - DEPENDENCIES INCLUDE: numpy, astropy, scipy, functools, reproject, console-progressbar (Installation: pip install console-progressbar) (for visualization)
 

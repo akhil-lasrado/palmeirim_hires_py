@@ -12,9 +12,10 @@ from astropy.utils.data import get_pkg_data_filename
 from astropy.convolution import convolve
 from astropy.convolution import convolve_fft
 from scipy.ndimage import zoom
-from reproject import reproject_interp
+from reproject import *
 from reproject import reproject_adaptive
 from reproject import reproject_exact
+from scipy import ndimage
 
 #%%
 
@@ -53,7 +54,7 @@ def find_pixel_scale(header):
     else:
         print('Unable to get pixel scale from image header')
         while True:
-            pixel_scale = input('Plesae input the pixel scale value in \
+            pixel_scale = input('Please input the pixel scale value in \
                                 arcsec per pixel')
             try:
                 pixel_scale = float(pixel_scale)
@@ -62,6 +63,7 @@ def find_pixel_scale(header):
                 pass
 
     return pixel_scale
+
 #%%
 
 # Function to convolve a fits image using a specified kernel. Output is the convolved fits image.
@@ -87,7 +89,7 @@ def convolveim(file,kernel):
             ratio = size / kernel_dat.shape[0]
         kernel_dat = zoom(kernel_dat, ratio) / ratio**2
 
-    convolved_image = convolve_fft(image,kernel_dat,boundary='wrap', nan_treatment='interpolate', normalize_kernel=True, preserve_nan=True)
+    convolved_image = convolve_fft(image,kernel_dat,boundary='interpolate',nan_treatment='interpolate')
     
     convolved_file = fits.PrimaryHDU(convolved_image)
     convolved_file.header = hdui
@@ -164,3 +166,35 @@ def jpb2jpp(file,beamarea):
     output_file.header = header
     
     return output_file
+
+#%%
+
+# Function to shift array in any direction in pixel units.
+
+def shift(array,shift_dir,shift_len):
+    a = np.copy(array)
+    if shift_dir=='up':
+        a = a[shift_len:,:]
+        a = np.append(a,np.zeros((shift_len,array.shape[1])),0)
+        return a
+    elif shift_dir=='down':
+        a = a[:-shift_len,:]
+        a = np.append(np.zeros((shift_len,array.shape[1])),a,0)
+        return a
+    elif shift_dir=='left':
+        a = a[:,shift_len:]
+        a = np.append(a,np.zeros((array.shape[0],shift_len)),1)
+        return a
+    elif shift_dir=='right':
+        a = a[:,:-shift_len]
+        a = np.append(np.zeros((array.shape[0],shift_len)),a,1)
+        return a
+    else:
+        print('Enter valid direction: up, down, left, right')
+
+#%%
+
+def trimbor(array,trim_len):
+    a = np.copy(array)
+    a = a[trim_len[0]:-trim_len[1],trim_len[2]:-trim_len[3]]
+    return a

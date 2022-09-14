@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 21 19:54:02 2022
+Created on Mon Mar 21 19:54:02 2022 v1.0*
 
 @author: Akhil
 """
@@ -99,31 +99,36 @@ def convolveim(file,kernel):
 
 #%%
 
-# Function to convolve a fits image to a particular pixel size. Output is the regridded fits image.
+# Function for adaptive resampling of a fits image to the pixel size of a template fits file. Output is the regridded fits image.
 
-def regridim(file,cdelt_new):
+def regridim(file,template):
     
     f_data = np.copy(file.data)
     f_header = file.header.copy()
     
+    cdelt_new = find_pixel_scale(template.header)
     cdelt_old = find_pixel_scale(f_header)
     
-    size_ax_y = int((f_data.shape[0]*cdelt_old)/cdelt_new)
-    size_ax_x = int((f_data.shape[1]*cdelt_old)/cdelt_new)
+    size_ax_y = template.shape[0]#round((f_data.shape[0]*cdelt_old)/cdelt_new)
+    size_ax_x = template.shape[1]#round((f_data.shape[1]*cdelt_old)/cdelt_new)
     
     data = np.random.random((size_ax_y,size_ax_x))
     hdu = fits.PrimaryHDU(data=data)
     hdu.header = f_header
     hdu.header['CRPIX1'] =  int(size_ax_x/2)
-    hdu.header['CDELT1'] =  -cdelt_new/3600 # Enter (-) pixel size required in arcseconds
+    hdu.header['CDELT1'] =  -cdelt_new/3600
     hdu.header['CRPIX2'] =  int(size_ax_y/2)
-    hdu.header['CDELT2'] =  cdelt_new/3600 # Enter (+) pixel size required in arcseconds
-    
-    array, footprint = reproject_exact(file, f_header)
+    hdu.header['CDELT2'] =  cdelt_new/3600
+    hdu.header['CD1_1'] = -cdelt_new/3600
+    hdu.header['CD1_2'] = 0.0
+    hdu.header['CD2_1'] = 0.0
+    hdu.header['CD2_2'] = cdelt_new/3600
+
+    array, footprint = reproject_adaptive(file, hdu.header)
     
     regridded_file = fits.PrimaryHDU(array)
-    regridded_file.header = f_header
-    
+    regridded_file.header = hdu.header
+
     return regridded_file
 
 #%%
@@ -194,7 +199,7 @@ def shift(array,shift_dir,shift_len):
 
 #%%
 
-def trimbor(array,trim_len):
+def trimborall(array,trim_len):
     a = np.copy(array)
-    a = a[trim_len[0]:-trim_len[1],trim_len[2]:-trim_len[3]]
+    a = a[trim_len:-trim_len,trim_len:-trim_len]
     return a
